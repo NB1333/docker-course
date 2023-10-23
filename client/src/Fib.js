@@ -18,10 +18,11 @@ class Fib extends Component {
       const values = await axios.get('/api/values/current');
       this.setState({ values: values.data });
     } catch (error) {
-      console.error('Error fetching values:', error);
+      console.error('Error fetching values:', error.message, error.response);
+      // Handle the error appropriately, e.g., show an error message to the user
     }
   }
-
+  
   async fetchIndexes() {
     try {
       const seenIndexes = await axios.get('/api/values/all');
@@ -30,26 +31,23 @@ class Fib extends Component {
       });
     } catch (error) {
       console.error('Error fetching indexes:', error.message, error.response);
-  
-      // Add retry logic here if needed
-      setTimeout(() => {
-        this.fetchIndexes();
-      }, 5000); // Retry after 5 seconds
+      // Handle the error appropriately
     }
-  }  
+  }
 
-  handleSubmit = async (event) => {
+  async handleSubmit(event) {
     event.preventDefault();
-
+  
     try {
       await axios.post('/api/values', {
         index: this.state.index,
       });
       this.setState({ index: '' });
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error submitting form:', error.message, error.response);
+      // Handle the error appropriately
     }
-  };
+  }  
 
   renderSeenIndexes() {
     return this.state.seenIndexes.map(({ number }) => number).join(', ');
@@ -57,17 +55,19 @@ class Fib extends Component {
 
   renderValues() {
     const entries = [];
-
+  
     for (let key in this.state.values) {
+      const calculatedValue = this.state.values[key];
+  
       entries.push(
         <div key={key}>
-          For index {key} I calculated {this.state.values[key]}
+          For index {key} I calculated {calculatedValue !== undefined ? calculatedValue : 'Nothing yet!'}
         </div>
       );
     }
-
+  
     return entries;
-  }
+  }  
 
   render() {
     return (
