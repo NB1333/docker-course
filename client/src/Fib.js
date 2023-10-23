@@ -14,24 +14,36 @@ class Fib extends Component {
   }
 
   async fetchValues() {
-    const values = await axios.get('/api/values/current');
-    this.setState({ values: values.data });
+    try {
+      const values = await axios.get('/api/values/current');
+      this.setState({ values: values.data });
+    } catch (error) {
+      console.error('Error fetching values:', error);
+    }
   }
 
   async fetchIndexes() {
-    const seenIndexes = await axios.get('/api/values/all');
-    this.setState({
-      seenIndexes: seenIndexes.data,
-    });
+    try {
+      const seenIndexes = await axios.get('/api/values/all');
+      this.setState({
+        seenIndexes: seenIndexes.data,
+      });
+    } catch (error) {
+      console.error('Error fetching indexes:', error);
+    }
   }
 
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    await axios.post('/api/values', {
-      index: this.state.index,
-    });
-    this.setState({ index: '' });
+    try {
+      await axios.post('/api/values', {
+        index: this.state.index,
+      });
+      this.setState({ index: '' });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   renderSeenIndexes() {
@@ -55,6 +67,7 @@ class Fib extends Component {
   render() {
     return (
       <div>
+        {this.state.loading && <p>Loading...</p>}
         <form onSubmit={this.handleSubmit}>
           <label>Enter your index:</label>
           <input
