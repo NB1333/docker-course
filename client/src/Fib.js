@@ -29,9 +29,14 @@ class Fib extends Component {
         seenIndexes: seenIndexes.data,
       });
     } catch (error) {
-      console.error('Error fetching indexes:', error);
+      console.error('Error fetching indexes:', error.message, error.response);
+  
+      // Add retry logic here if needed
+      setTimeout(() => {
+        this.fetchIndexes();
+      }, 5000); // Retry after 5 seconds
     }
-  }
+  }  
 
   handleSubmit = async (event) => {
     event.preventDefault();
