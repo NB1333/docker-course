@@ -13,3 +13,10 @@ after_success:
   - docker build -t nikitabykov/multi-nginx ./nginx
   - docker build -t nikitabykov/multi-server ./server
   - docker build -t nikitabykov/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push nikitabykov/multi-client
+  - docker push nikitabykov/multi-nginx
+  - docker push nikitabykov/multi-server
+  - docker push nikitabykov/multi-worker
