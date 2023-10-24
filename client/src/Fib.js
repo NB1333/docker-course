@@ -19,7 +19,6 @@ class Fib extends Component {
       this.setState({ values: values.data });
     } catch (error) {
       console.error('Error fetching values:', error.message, error.response);
-      // Handle the error appropriately, e.g., show an error message to the user
     }
   }
   
@@ -31,7 +30,6 @@ class Fib extends Component {
       });
     } catch (error) {
       console.error('Error fetching indexes:', error.message, error.response);
-      // Handle the error appropriately
     }
   }
 
@@ -45,7 +43,6 @@ class Fib extends Component {
       this.setState({ index: '' });
     } catch (error) {
       console.error('Error submitting form:', error.message, error.response);
-      // Handle the error appropriately
     }
   }  
 
