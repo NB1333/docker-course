@@ -9,32 +9,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      - name: docker
+    container:
+      image: docker:latest
+      options: --privileged
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Build React Test Image
-        run: docker build -t nb1333/react-test -f ./client/Dockerfile.dev ./client
+        run: docker build -t nikitabykov/react-test -f ./client/Dockerfile.dev ./client
 
       - name: Run Tests
-        run: docker run -e CI=true nb1333/react-test npm test
+        run: docker run -e CI=true nikitabykov/react-test npm test
 
       - name: Build Docker Images
         run: |
-          docker build -t nb1333/multi-client ./client
-          docker build -t nb1333/multi-nginx ./nginx
-          docker build -t nb1333/multi-server ./server
-          docker build -t nb1333/multi-worker ./worker
+          docker build -t nikitabykov/multi-client ./client
+          docker build -t nikitabykov/multi-nginx ./nginx
+          docker build -t nikitabykov/multi-server ./server
+          docker build -t nikitabykov/multi-worker ./worker
 
       - name: Login to Docker Hub
         run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
       - name: Push Docker Images
         run: |
-          docker push nb1333/multi-client
-          docker push nb1333/multi-nginx
-          docker push nb1333/multi-server
-          docker push nb1333/multi-worker
+          docker push nikitabykov/multi-client
+          docker push nikitabykov/multi-nginx
+          docker push nikitabykov/multi-server
+          docker push nikitabykov/multi-worker
