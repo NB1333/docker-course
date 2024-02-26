@@ -31,7 +31,7 @@ jobs:
           docker build -t nikitabykov/multi-worker ./worker
 
       - name: Login to Docker Hub
-        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+        run: docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker Images
         run: |
